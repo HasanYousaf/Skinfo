@@ -1,10 +1,33 @@
+import 'package:camera/camera.dart';
+import 'package:final_project/AccessDB.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import 'models/product.dart';
+import 'text_detector_view.dart';
+import 'package:final_project/AccessDB.dart';
+import 'AccessDB.dart';
 
-void main() {
-  runApp(const MyApp());
+var db;
+List<CameraDescription> cameras = [];
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await AccessDB().initDB();
+  Future<List<Product>> futureProducts = AccessDB().getProducts();
+  List<Product> products = await futureProducts;
+  print (products[0].toString());
+
+  cameras = await availableCameras();
+
+  runApp(MyApp());
 }
+
+// void main() {
+//   runApp(const MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -78,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
               decoration: BoxDecoration(
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.push(
                       context, MaterialPageRoute(builder: (_) => HomePage()));
                 },
@@ -91,7 +114,8 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(
               height: 130,
             ),
-            Text('New User? Create Account') //Add navigation to sign up page
+            Text('New User? Create Account')
+            //Add navigation to sign up page
           ],
         ),
       ),
@@ -109,16 +133,37 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Skinfo'),
-            backgroundColor: Colors.blue,
-          ),
-        ));
+    return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: const Text("Welcome Back!"),
+        ),
+        body: Builder(builder: (BuildContext context) {
+          return Container(
+              alignment: Alignment.center,
+              child: Flex(
+                  direction: Axis.vertical,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (_) => TextRecognizerView()));
+                      },
+                      child: const Text(
+                        'Scan Product Label',
+                        style: TextStyle(color: Colors.white, fontSize: 25),
+                      ),
+                    ),
+                    ElevatedButton(
+                        onPressed: () => {},
+                        child: Text('Search By Name',
+                            style: TextStyle(color: Colors.white, fontSize: 25)))
+                  ]));
+        }));
   }
 }
+
 
 // class FirstScreen extends StatelessWidget {
 //   const FirstScreen({Key? key}) : super(key: key);

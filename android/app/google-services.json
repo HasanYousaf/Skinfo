@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "508753761660",
+    "project_id": "skinfo-20261",
+    "storage_bucket": "skinfo-20261.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508753761660:android:6c02d5ea9f95a18a5240f9",
+        "android_client_info": {
+          "package_name": "com.example.final_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508753761660-qqa55vqhfguosdb6899actahh7mr0t5g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPJSfKnBXoVsjJhlxrzAYhPkL2zsdK61w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508753761660-qqa55vqhfguosdb6899actahh7mr0t5g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
