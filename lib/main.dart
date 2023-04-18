@@ -9,16 +9,16 @@ import 'text_detector_view.dart';
 import 'package:final_project/AccessDB.dart';
 import 'AccessDB.dart';
 
-var db;
 List<CameraDescription> cameras = [];
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await AccessDB().initDB();
-  Future<List<Product>> futureProducts = AccessDB().getProducts();
-  List<Product> products = await futureProducts;
-  print (products[0].toString());
+  List<Product> productList = await AccessDB.getProducts();
+  for (Product product in productList) {
+    if (product.name.contains("Natural Moisturizing Factors"))
+      print(product.toString());
+  }
 
   cameras = await availableCameras();
 
@@ -132,6 +132,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+
+
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
