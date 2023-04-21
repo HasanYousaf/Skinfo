@@ -29,22 +29,22 @@ class Manage {
          found = p;
         return found;
       }
-      List<String> section = p.name.split(' ');
-      int count = 0;
-      int prevCount = 0;
-      if (recognized.toUpperCase().contains(p.brand.toUpperCase())) {
-        for (String s in section) {
-          if (recognized.toUpperCase().contains(s.toUpperCase())
-              || s.toUpperCase().contains(recognized.toUpperCase())) {
-            count ++;
+      else {
+        List<String> section = recognized.split(' ');
+        int count = 0;
+        if (recognized.toUpperCase().contains(p.brand.toUpperCase())) {
+          for (String s in section) {
+            if (s.toUpperCase() != "EAU" && s.toUpperCase() != "DE"
+                && (p.name.toUpperCase().contains(s.toUpperCase())
+                    || s.toUpperCase().contains(p.name.toUpperCase()))) {
+              count ++;
+            }
           }
-
-      }
-        prevCount = count;
-          if (count > 1 && count > prevCount) {
+          if (count > 1) {
             found = p;
             return found;
           }
+        }
       }
     }
     return null;
