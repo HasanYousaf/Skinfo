@@ -13,7 +13,6 @@ class Product {
   String brand;
   String ingredients;
 
-  Product({required this.name, required this.brand, required this.ingredients});
 
 
   Map<String, dynamic> toMap() {

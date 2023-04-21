@@ -18,7 +18,7 @@ class TextRecognizerPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.0
+      ..strokeWidth = 0
       ..color = Colors.lightGreenAccent;
 
     final Paint background = Paint()..color = Color(0x99000000);

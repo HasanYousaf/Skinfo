@@ -1,33 +1,17 @@
 import 'package:camera/camera.dart';
-import 'package:final_project/AccessDB.dart';
+import 'package:final_project/screens/search_by_name.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'models/product.dart';
-import 'text_detector_view.dart';
-import 'package:final_project/AccessDB.dart';
-import 'AccessDB.dart';
+import 'package:final_project/screens/text_detector_view.dart';
 
 List<CameraDescription> cameras = [];
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  List<Product> productList = await AccessDB.getProducts();
-  for (Product product in productList) {
-    if (product.name.contains("Natural Moisturizing Factors"))
-      print(product.toString());
-  }
-
   cameras = await availableCameras();
 
   runApp(MyApp());
 }
-
-// void main() {
-//   runApp(const MyApp());
-// }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -35,6 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      title: "Skinfo",
       debugShowCheckedModeBanner: false,
       home: LoginPage(),
     );
@@ -54,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Welcome Back!"),
+        title: const Text("Please Log in", textAlign: TextAlign.center),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -63,13 +48,19 @@ class _LoginPageState extends State<LoginPage> {
               padding: EdgeInsets.only(top: 60.0),
               child: Center(
                 child: SizedBox(
-                    width: 200, height: 150, child: Text('Logo goes here')),
+                    width: 200,
+                    height: 150,
+                    child: Text(
+                      'Welcome to Skinfo!',
+                      textScaleFactor: 3.2,
+                      style: TextStyle(color: Colors.blue),
+                    )),
               ),
             ),
             const Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.all(15),
               child: TextField(
+                style: TextStyle(color: Colors.blue),
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
@@ -81,6 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                   EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
+                style: TextStyle(color: Colors.blue),
                 obscureText: true,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -132,8 +124,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
-
-
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
@@ -150,7 +140,9 @@ class _HomePageState extends State<HomePage> {
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
-                            context, MaterialPageRoute(builder: (_) => TextRecognizerView()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => TextRecognizerView()));
                       },
                       child: const Text(
                         'Scan Product Label',
@@ -158,63 +150,15 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     ElevatedButton(
-                        onPressed: () => {},
-                        child: Text('Search By Name',
-                            style: TextStyle(color: Colors.white, fontSize: 25)))
+                        onPressed: () => {Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (_) => SearchByName()))
+                    },
+                        child: const Text('Search By Name',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 25)))
                   ]));
         }));
   }
 }
-
-
-// class FirstScreen extends StatelessWidget {
-//   const FirstScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//         child: Center(
-//             child: ElevatedButton(
-//       onPressed: () => Navigator.of(context)
-//           .push(MaterialPageRoute(builder: (context) => const NewScreen())),
-//       child: const Text('Second Screen'),
-//     )));
-//   }
-// }
-
-// class NewScreen extends StatefulWidget {
-//   const NewScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   State<NewScreen> createState() => _NewScreenState();
-// }
-//
-// class _NewScreenState extends State<NewScreen> {
-//   TextEditingController textEditingController = TextEditingController();
-//
-//   @override
-//   void dispose() {
-//     textEditingController.dispose();
-//     // ignore: avoid_print
-//     // print('Dispose used');
-//     super.dispose();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         backgroundColor: Colors.white,
-//         appBar: AppBar(
-//           title: const Text('Second Screen'),
-//           backgroundColor: Colors.blue,
-//         ),
-//         // Avoid unnecessary containers
-//         body: Container(
-//             child: Center(
-//                 child: ElevatedButton(
-//           onPressed: () => Navigator.of(context).push(
-//               MaterialPageRoute(builder: (context) => const FirstScreen())),
-//           child: const Text('First Screen'),
-//         ))));
-//   }
-// }

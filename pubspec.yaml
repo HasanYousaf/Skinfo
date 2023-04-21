@@ -43,7 +43,7 @@ dependencies:
   camera: ^0.10.3+2
 #  flutter_scalable_ocr: ^1.0.1
   sqflite: any
-  path_provider: any
+  path: any
   image_picker: ^0.8.6
 
 

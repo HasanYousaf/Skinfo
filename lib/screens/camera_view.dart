@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_commons/google_mlkit_commons.dart';
 import 'package:image_picker/image_picker.dart';
-import 'main.dart';
+import 'package:final_project/main.dart';
 
 enum ScreenMode { liveFeed, gallery }
 
@@ -38,9 +38,6 @@ class _CameraViewState extends State<CameraView> {
   String? _path;
   ImagePicker? _imagePicker;
   int _cameraIndex = -1;
-  double zoomLevel = 0.0, minZoomLevel = 0.0, maxZoomLevel = 0.0;
-  final bool _allowPicker = true;
-  bool _changingCameraLens = false;
 
   @override
   void initState() {
@@ -68,9 +65,9 @@ class _CameraViewState extends State<CameraView> {
     }
 
     if (_cameraIndex != -1) {
-      _startLiveFeed();
-    } else {
       _mode = ScreenMode.gallery;
+    } else {
+      _startLiveFeed();
     }
   }
 
@@ -85,42 +82,9 @@ class _CameraViewState extends State<CameraView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        actions: [
-          if (_allowPicker)
-            Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: _switchScreenMode,
-                child: Icon(
-                  _mode == ScreenMode.liveFeed
-                      ? Icons.photo_library_outlined
-                      : (Platform.isIOS
-                      ? Icons.camera_alt_outlined
-                      : Icons.camera),
-                ),
-              ),
-            ),
-        ],
-      ),
+        ),
       body: _body(),
     );
-  }
-
-  Widget? _floatingActionButton() {
-    if (_mode == ScreenMode.gallery) return null;
-    if (cameras.length == 1) return null;
-    return SizedBox(
-        height: 70.0,
-        width: 70.0,
-        child: FloatingActionButton(
-          onPressed: _switchLiveCamera,
-          child: Icon(
-            Platform.isIOS
-                ? Icons.flip_camera_ios_outlined
-                : Icons.account_box,
-            size: 40,
-          ),
-        ));
   }
 
   Widget _body() {
@@ -165,7 +129,7 @@ class _CameraViewState extends State<CameraView> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-              '${_path == null ? '' : 'Image path: $_path'}\n\n${widget.text ?? ''}'),
+              widget.text ?? ''),
         ),
     ]);
   }
@@ -182,21 +146,6 @@ class _CameraViewState extends State<CameraView> {
     setState(() {});
   }
 
-  void _switchScreenMode() {
-    _image = null;
-    if (_mode == ScreenMode.liveFeed) {
-      _mode = ScreenMode.gallery;
-      _stopLiveFeed();
-    } else {
-      _mode = ScreenMode.liveFeed;
-      _startLiveFeed();
-    }
-    if (widget.onScreenModeChanged != null) {
-      widget.onScreenModeChanged!(_mode);
-    }
-    setState(() {});
-  }
-
   Future _startLiveFeed() async {
     final camera = cameras[_cameraIndex];
     _controller = CameraController(
@@ -208,13 +157,6 @@ class _CameraViewState extends State<CameraView> {
       if (!mounted) {
         return;
       }
-      _controller?.getMinZoomLevel().then((value) {
-        zoomLevel = value;
-        minZoomLevel = value;
-      });
-      _controller?.getMaxZoomLevel().then((value) {
-        maxZoomLevel = value;
-      });
       _controller?.startImageStream(_processCameraImage);
       setState(() {});
     });
@@ -226,14 +168,6 @@ class _CameraViewState extends State<CameraView> {
     _controller = null;
   }
 
-  Future _switchLiveCamera() async {
-    setState(() => _changingCameraLens = true);
-    _cameraIndex = (_cameraIndex + 1) % cameras.length;
-
-    await _stopLiveFeed();
-    await _startLiveFeed();
-    setState(() => _changingCameraLens = false);
-  }
 
   Future _processPickedFile(XFile? pickedFile) async {
     final path = pickedFile?.path;
