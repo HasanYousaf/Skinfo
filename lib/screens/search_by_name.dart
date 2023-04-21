@@ -25,7 +25,7 @@ class _SearchByNameState extends State<SearchByName> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Please Log in", textAlign: TextAlign.center),
+        title: const Text("Search", textAlign: TextAlign.center),
       ),
       body: SingleChildScrollView(
         child: Column(
